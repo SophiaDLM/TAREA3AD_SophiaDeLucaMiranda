@@ -8,6 +8,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -25,6 +28,21 @@ public class Carnet {
 	
 	private int nvips = 0;
 	
+	
+	//BREVE ANOTACIÓN: SE COLOCA DE ESTA MANERA PARA QUE EL ID DEL
+	//CARNET COINCIDA CON EL DE PEREGRINO EN VEZ DE QUE EL CARNET
+	//TENGA SU PROPIO ID, ASÍ, SI NO EXISTE EL PEREGRINO, TAMPOCO
+	//EL CARNET - [EXPLICAR MEJOR AL HACER LA DOCUMENTACIÓN EN EL
+	//CÓDIGO (JAVADOC)]
+	@OneToOne
+	@MapsId
+	@JoinColumn(name = "id")
+	private Peregrino peregrino;
+	
+	//ESTABLECE LA RELACIÓN ENTRE CARNET Y PARADA UNIDIRECCIONAL
+	@OneToOne
+	@JoinColumn(name = "idParadaInicial", nullable = false)
+	private Parada paradaInicial;
 	
 	public Carnet() {
 		

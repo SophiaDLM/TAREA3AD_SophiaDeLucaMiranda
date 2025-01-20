@@ -1,12 +1,17 @@
 package com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.modelo;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,6 +29,12 @@ public class Parada {
 	
 	private String responsable;
 	
+	//SIMILAR A PEREGRINO ESTANCIA
+	@OneToMany(mappedBy = "parada", cascade = CascadeType.ALL)
+	private List<Estancia> listaEstancias = new ArrayList<>();
+	
+	@ManyToMany(mappedBy = "listaParadas")
+	private List<Peregrino> listaPeregrinos = new ArrayList<>();
 	
 	public Parada() {
 		
