@@ -1,0 +1,4 @@
+Debido a problemas con el IDE Eclipse al utilizar JavaFX a pesar de haber seguido todos los
+pasos para configurarlo correctamente, tuve que cambiar de IDE para poder trabajar, lo cuál
+también me hizo crear una nueva rama en Github "main" donde estará el proyecto actualizado
+con los cambios realizados.
