@@ -12,7 +12,7 @@ public enum VistaFxml {
 
         @Override
         public String getArchivoFxml() {
-            return "/fxml/iniciarsesion.fxml";
+            return "/fxml/IniciarSesion.fxml";
         }
     },
 
@@ -24,10 +24,33 @@ public enum VistaFxml {
 
         @Override
         public String getArchivoFxml() {
-            return "/fxml/administrador.fxml";
+            return "/fxml/Administrador.fxml";
         }
-    }
-    ;
+    },
+
+    PEREGRINO {
+        @Override
+        public String getTitulo() {
+            return getStringDelResourceBundle("peregrino.titulo");
+        }
+
+        @Override
+        public String getArchivoFxml() {
+            return "/fxml/Peregrino.fxml";
+        }
+    },
+
+    PARADA {
+        @Override
+        public String getTitulo() {
+            return getStringDelResourceBundle("parada.titulo");
+        }
+
+        @Override
+        public String getArchivoFxml() {
+            return "/fxml/Parada.fxml";
+        }
+    };
 
     public abstract String getTitulo();
 

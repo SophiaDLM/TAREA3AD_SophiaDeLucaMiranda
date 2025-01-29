@@ -5,11 +5,11 @@ import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.modelo.Credenciales;
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.modelo.Parada;
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.modelo.TipoUsuario;
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.servicios.CredencialesServicio;
+import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.servicios.ParadaServicio;
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.vista.VistaFxml;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
@@ -18,9 +18,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Controller
-public class IniciarSesionControlador implements Initializable {
+public class AdministradorControlador implements Initializable {
     @FXML
-    private GridPane panelPrincipal;
+    private TextField tfNombre;
+
+    @FXML
+    private TextField tfRegion;
 
     @FXML
     private TextField tfUsuario;
@@ -28,30 +31,16 @@ public class IniciarSesionControlador implements Initializable {
     @FXML
     private PasswordField pfContraseña;
 
-    @FXML
-    private GridPane panelRegistrarse;
-
-    @FXML
-    private TextField tfUsuarioP;
-
-    @FXML
-    private PasswordField pfContraseñaP;
-
-    @FXML
-    private TextField tfNombre;
-
-    @FXML
-    private ChoiceBox<String> cbNacionalidad;
-
-    @FXML
-    private ChoiceBox<String> cbParadaInicial;
-
-    @Autowired
-    private CredencialesServicio credServicio;
-
     @Lazy
     @Autowired
     private ManejadorEscenas me;
+
+    @Autowired
+    private CredencialesServicio cs;
+
+    @Autowired
+    private ParadaServicio ps;
+
 
     @FXML
     public void mostrarAyuda() {
@@ -63,10 +52,10 @@ public class IniciarSesionControlador implements Initializable {
     }
 
     @FXML
-    public void volver() {
+    public void cerrarSesion() {
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmacion.setTitle("Confirmación Para Volver");
-        confirmacion.setContentText("¿Está seguro que desea volver a la pantalla principal?");
+        confirmacion.setTitle("Confirmación Cerrar Sesión");
+        confirmacion.setContentText("¿Está seguro que desea cerrar sesión?");
 
         ButtonType confirmar = confirmacion.showAndWait().orElse(ButtonType.CANCEL);
 
@@ -75,26 +64,9 @@ public class IniciarSesionControlador implements Initializable {
         }
     }
 
+    //SACAR MÉTODO PARA LAS ALERTAS Y EVITAR REPETICIÓN DE CÓDIGO
     @FXML
-    public void iniciarSesion() {
-        if(credServicio.autenticar(tfUsuario.getText(), pfContraseña.getText()).equals(TipoUsuario.ADMINISTRADOR)) {
-            me.cambiarEscena(VistaFxml.ADMINISTRADOR);
-        } else if(credServicio.autenticar(tfUsuario.getText(), pfContraseña.getText()).equals(TipoUsuario.PARADA)) {
-            me.cambiarEscena(VistaFxml.PARADA);
-        } else if(credServicio.autenticar(tfUsuario.getText(), pfContraseña.getText()).equals(TipoUsuario.PEREGRINO)) {
-            me.cambiarEscena(VistaFxml.PEREGRINO);
-        } else {
-            Alert error = new Alert(Alert.AlertType.ERROR);
-            error.setTitle("Error");
-            error.setHeaderText("No se ha encontrado al usuario");
-            error.setContentText("Regístrese o asegúrese que ha introducido la contraseña correctamente");
-            error.showAndWait();
-        }
-    }
-
-    //EDITAR MAÑANA
-    @FXML
-    public void nuevoPeregrino() {
+    public void nuevaParada() {
         String nombre = tfNombre.getText();
         char region = tfRegion.getText().charAt(0);
         String usuario = tfUsuario.getText();
@@ -146,10 +118,24 @@ public class IniciarSesionControlador implements Initializable {
             error.setContentText("El nombre no puede estar vacio");
             error.showAndWait();
         }
+
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+    }
+
+    private boolean validarNombre(String nombre) {
+        if(nombre.matches("[a-zA-Z ]+")) {
+            String nombreSinEspacios = nombre.trim();
+            if(nombreSinEspacios.length() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 }

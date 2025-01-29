@@ -35,8 +35,11 @@ public class Parada {
 		
 	}
 	
-	public Parada(String nombre, char region, String responsable) {
-		
+	public Parada(Long id, String nombre, char region, String responsable) {
+		this.id = id;
+		this.nombre = nombre;
+		this.region = region;
+		this.responsable = responsable;
 	}
 
 	

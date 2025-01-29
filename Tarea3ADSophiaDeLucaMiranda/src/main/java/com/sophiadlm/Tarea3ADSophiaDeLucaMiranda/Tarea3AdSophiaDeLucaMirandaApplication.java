@@ -34,7 +34,7 @@ public class Tarea3AdSophiaDeLucaMirandaApplication extends Application {
 	}
 
 	protected void mostrarEscenaPrincipal() {
-		me.cambiarEscena(VistaFxml.ADMINISTRADOR);
+		me.cambiarEscena(VistaFxml.INICIARSESION);
 	}
 
 	private ConfigurableApplicationContext contextoAplicacionSpringBoot() {
