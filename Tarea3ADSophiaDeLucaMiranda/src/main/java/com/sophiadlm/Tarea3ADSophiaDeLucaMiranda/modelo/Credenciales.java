@@ -4,6 +4,8 @@ import java.util.Objects;
 
 import jakarta.persistence.*;
 
+//DOCUMENTAR - NO MÁS CAMBIOS AQUÍ
+
 @Entity
 @Table(name = "Credenciales")
 public class Credenciales {

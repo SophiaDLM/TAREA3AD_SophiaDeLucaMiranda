@@ -237,7 +237,7 @@
                      </GridPane.margin>
                   </Label>
                   <ChoiceBox fx:id="cbParadaInicial" prefHeight="30.0" prefWidth="330.0" style="-fx-background-color: white; -fx-border-color: black;" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                  <Button mnemonicParsing="false" prefWidth="100.0" style="-fx-background-color: white; -fx-border-color: black;" text="ACEPTAR" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                  <Button mnemonicParsing="false" onAction="#nuevoPeregrino" prefWidth="100.0" style="-fx-background-color: white; -fx-border-color: black;" text="ACEPTAR" GridPane.columnIndex="1" GridPane.rowIndex="7">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="14.0" />
                      </font>

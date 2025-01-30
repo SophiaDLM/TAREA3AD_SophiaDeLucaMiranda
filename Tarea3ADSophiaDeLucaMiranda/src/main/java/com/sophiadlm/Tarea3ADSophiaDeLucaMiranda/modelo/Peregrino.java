@@ -6,9 +6,6 @@ import java.util.Objects;
 
 import jakarta.persistence.*;
 
-//AGREGAR DOCUMENTACIÓN UNA VEZ SE HAGAN LAS RELACIONES ENTRE LAS TABLAS
-//TENER CUIDADO CON LOS MAPPEDBY Y LOS NOMBRES!!!!
-
 @Entity
 @Table(name = "Peregrino")
 public class Peregrino {
@@ -45,8 +42,10 @@ public class Peregrino {
 		
 	}
 	
-	public Peregrino(String nombre, String nacionalidad) {
-		
+	public Peregrino(Long id, String nombre, String nacionalidad) {
+		this.id = id;
+		this.nombre = nombre;
+		this.nacionalidad = nacionalidad;
 	}
 	
 	
@@ -80,6 +79,30 @@ public class Peregrino {
 
 	public void setCarnet(Carnet carnet) {
 		this.carnet = carnet;
+	}
+
+	public Credenciales getCredenciales() {
+		return credenciales;
+	}
+
+	public void setCredenciales(Credenciales credenciales) {
+		this.credenciales = credenciales;
+	}
+
+	public List<Estancia> getListaEstancias() {
+		return listaEstancias;
+	}
+
+	public void setListaEstancias(List<Estancia> listaEstancias) {
+		this.listaEstancias = listaEstancias;
+	}
+
+	public List<Parada> getListaParadas() {
+		return listaParadas;
+	}
+
+	public void setListaParadas(List<Parada> listaParadas) {
+		this.listaParadas = listaParadas;
 	}
 
 	//EDITAR LUEGO

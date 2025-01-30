@@ -75,7 +75,30 @@ public class Parada {
 		this.responsable = responsable;
 	}
 
-	
+	public Credenciales getCredenciales() {
+		return credenciales;
+	}
+
+	public void setCredenciales(Credenciales credenciales) {
+		this.credenciales = credenciales;
+	}
+
+	public List<Estancia> getListaEstancias() {
+		return listaEstancias;
+	}
+
+	public void setListaEstancias(List<Estancia> listaEstancias) {
+		this.listaEstancias = listaEstancias;
+	}
+
+	public List<Peregrino> getListaPeregrinos() {
+		return listaPeregrinos;
+	}
+
+	public void setListaPeregrinos(List<Peregrino> listaPeregrinos) {
+		this.listaPeregrinos = listaPeregrinos;
+	}
+
 	@Override
 	public String toString() {
 		return "Parada [id=" + id + ", nombre=" + nombre + ", region=" + region + ", responsable=" + responsable + "]";

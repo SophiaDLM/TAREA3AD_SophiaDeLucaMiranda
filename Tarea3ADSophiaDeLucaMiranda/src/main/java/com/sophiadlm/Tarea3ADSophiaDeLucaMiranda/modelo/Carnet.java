@@ -3,30 +3,21 @@ package com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.modelo;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Carnet")
 public class Carnet {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", updatable = false, nullable = false)
 	private Long id;
 	
-	private LocalDate fechaexp = LocalDate.now();
+	private LocalDate fechaexp;
 	
-	private double distancia = 0.0;
+	private double distancia;
 	
-	private int nvips = 0;
+	private int nvips;
 	
 	
 	//BREVE ANOTACIÓN: SE COLOCA DE ESTA MANERA PARA QUE EL ID DEL
@@ -35,23 +26,23 @@ public class Carnet {
 	//EL CARNET - [EXPLICAR MEJOR AL HACER LA DOCUMENTACIÓN EN EL
 	//CÓDIGO (JAVADOC)]
 	@OneToOne
-	@MapsId
-	@JoinColumn(name = "id")
+	@PrimaryKeyJoinColumn(name = "id", foreignKey = @ForeignKey(name = "fk_carnet_peregrino"))
 	private Peregrino peregrino;
 	
 	//ESTABLECE LA RELACIÓN ENTRE CARNET Y PARADA UNIDIRECCIONAL
 	@OneToOne
 	@JoinColumn(name = "idParadaInicial", nullable = false)
 	private Parada paradaInicial;
-	
+
 	public Carnet() {
-		
+
 	}
 	
-	public Carnet(LocalDate fechaexp, double distancia, int nvips) {
-		this.fechaexp = fechaexp;
-		this.distancia = distancia;
-		this.nvips = nvips;
+	public Carnet(Long id) {
+		this.id = id;
+		this.fechaexp = LocalDate.now();
+		this.distancia = 0.0;
+		this.nvips = 0;
 	}
 
 	
@@ -87,7 +78,22 @@ public class Carnet {
 		this.nvips = nvips;
 	}
 
-	
+	public Parada getParadaInicial() {
+		return paradaInicial;
+	}
+
+	public void setParadaInicial(Parada paradaInicial) {
+		this.paradaInicial = paradaInicial;
+	}
+
+	public Peregrino getPeregrino() {
+		return peregrino;
+	}
+
+	public void setPeregrino(Peregrino peregrino) {
+		this.peregrino = peregrino;
+	}
+
 	@Override
 	public String toString() {
 		return "Carnet [id=" + id + ", fechaexp=" + fechaexp + ", distancia=" + distancia + ", nvips=" + nvips + "]";

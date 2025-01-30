@@ -3,6 +3,7 @@ package com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.controlador;
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.config.ManejadorEscenas;
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.modelo.Credenciales;
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.modelo.Parada;
+import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.modelo.SesionUsuario;
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.modelo.TipoUsuario;
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.servicios.CredencialesServicio;
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.servicios.ParadaServicio;

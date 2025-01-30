@@ -11,7 +11,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import java.io.IOException;
 
-//FALTA DE COMMITS DEBIDO A QUE TUVE UN PROBLEMA CON ECLIPSE Y TUVE QUE HACER EL RESTO DEL PROYECTO EN INTELLIJ
+
+//ES PROBABLE QUE HAYA CAMBIOS SIGNIFICATIVOS DESPUÉS
+
 @SpringBootApplication
 public class Tarea3AdSophiaDeLucaMirandaApplication extends Application {
 	protected ConfigurableApplicationContext contextoAplicacion;
