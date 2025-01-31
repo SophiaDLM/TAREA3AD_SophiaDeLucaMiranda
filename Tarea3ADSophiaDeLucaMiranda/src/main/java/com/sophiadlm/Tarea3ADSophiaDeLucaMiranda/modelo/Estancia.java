@@ -69,7 +69,22 @@ public class Estancia {
 		this.vip = vip;
 	}
 
-	
+	public Peregrino getPeregrino() {
+		return peregrino;
+	}
+
+	public void setPeregrino(Peregrino peregrino) {
+		this.peregrino = peregrino;
+	}
+
+	public Parada getParada() {
+		return parada;
+	}
+
+	public void setParada(Parada parada) {
+		this.parada = parada;
+	}
+
 	@Override
 	public String toString() {
 		return "Estancia [id=" + id + ", fecha=" + fecha + ", vip=" + vip + "]";

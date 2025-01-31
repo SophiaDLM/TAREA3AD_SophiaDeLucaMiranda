@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xml" href="test.xsl"?><carnet>
+    <id>10</id>
+    <fechaexp>2025-01-31</fechaexp>
+    <expedidoen>oviedo</expedidoen>
+    <peregrino>
+        <nombre>Ravzen</nombre>
+        <nacionalidad>DE - Alemania</nacionalidad>
+    </peregrino>
+    <hoy>2025-01-31</hoy>
+    <distanciatotal>0.0</distanciatotal>
+    <paradas>
+        <parada>
+            <orden>1</orden>
+            <nombre>oviedo</nombre>
+            <region>o</region>
+        </parada>
+    </paradas>
+    <estancias>
+        <estancia>
+            <id>1</id>
+            <fecha>2025-01-31</fecha>
+            <parada>oviedo</parada>
+            <vip/>
+        </estancia>
+    </estancias>
+</carnet>

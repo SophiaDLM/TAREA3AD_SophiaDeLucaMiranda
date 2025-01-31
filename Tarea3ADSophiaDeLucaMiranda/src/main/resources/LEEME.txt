@@ -1,0 +1,23 @@
+Es posible que al descargar el proyecto se deba descargar y agregar manualmente la librería de JavaFX 23,
+y añadirla al IDE al que se quiera exportar el proyecto.
+
+Además de eso, es posible que se necesite añadir la siguiente configuración:
+
+- En la clase principal Tarea3AdSophiaDeLucaMirandaApplication ir a Run As >> Run configurations.
+- Dentro de Run Configurations localizar la pestaña Arguments.
+- Dentro de Arguments buscaremos las VM Arguments.
+- Dentro se colocará lo siguiente: --module-path "ruta\del\archivo\javafx-sdk\lib" --add-modules javafx.controls,javafx.fxml. (*)
+
+
+En caso de que el proyecto siga sin funcionar en Eclipse, puede intentar abrirse en IntelliJ, donde las configuraciones
+serían bastante similares.
+
+- Para añadir la librería manualmente en IntelliJ iríamos a File >> Project Structure...
+- En Project Settings seleccionaríamos Libraries y damos clic al + y seleccionariamos la opción Java, que nos abrirá
+un buscador de archivos para que podamos añadir todos los .jar de la librería descargada en nuestro equipo.
+- Una vez hecho, le pondríamos el nombre y hacemos clic en Apply.
+- Para añadir los argumentos de la VM, iremos a Run >> Edit Configurations...
+- Una vez allí, seleccionamos nuestra clase principal y desplegamos el menú que dice Modify options para luego seleccionar
+Add VM options e insertar lo siguiente: --module-path "ruta\del\archivo\javafx-sdk\lib" --add-modules javafx.controls,javafx.fxml. (*)
+
+(*) Tiene que estar añadida la librería de JavaFX antes de realizar la configuración.

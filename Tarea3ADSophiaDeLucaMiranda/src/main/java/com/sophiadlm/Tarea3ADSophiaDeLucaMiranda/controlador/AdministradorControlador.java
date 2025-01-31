@@ -3,7 +3,6 @@ package com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.controlador;
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.config.ManejadorEscenas;
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.modelo.Credenciales;
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.modelo.Parada;
-import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.modelo.SesionUsuario;
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.modelo.TipoUsuario;
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.servicios.CredencialesServicio;
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.servicios.ParadaServicio;
@@ -18,8 +17,18 @@ import org.springframework.stereotype.Controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/***
+ * Clase AdministradorControlador que se encarga de manejar las acciones
+ * disponibles de un administrador como lo es acceder a la ayuda de usuario
+ * (no implementada aún), al método para añadir una nueva parada a la base de datos
+ * y a cerrar sesión si así lo desea.
+ *
+ * Esta clase implementa Initializable para el uso de JavaFX.
+ */
 @Controller
 public class AdministradorControlador implements Initializable {
+
+    //Elementos relacionados con el archivo FXML:
     @FXML
     private TextField tfNombre;
 
@@ -32,10 +41,12 @@ public class AdministradorControlador implements Initializable {
     @FXML
     private PasswordField pfContraseña;
 
+    //Elementos relacionados con el manejo de las escenas:
     @Lazy
     @Autowired
     private ManejadorEscenas me;
 
+    //Elementos relacionados con la manipulación de la base de datos:
     @Autowired
     private CredencialesServicio cs;
 
@@ -43,6 +54,10 @@ public class AdministradorControlador implements Initializable {
     private ParadaServicio ps;
 
 
+    /***
+     * Método mostrarAyuda que, como está incompleto, sólo se encarga
+     * de mostrar una alerta informativa.
+     */
     @FXML
     public void mostrarAyuda() {
         Alert sinImplementar = new Alert(Alert.AlertType.INFORMATION);
@@ -52,6 +67,17 @@ public class AdministradorControlador implements Initializable {
         sinImplementar.showAndWait();
     }
 
+
+    /***
+     * Método cerrarSesion que lanza una alerta pidiendo al usuario que
+     * confirme su decisión. Si el usuario pulsa en el botón de aceptar, se
+     * camibia la ventana a la de INICIARSESION.
+     *
+     * En este método no se maneja en sí la sesión del usuario, puesto que
+     * sólo hay un administrador general y en ninguno de los casos de uso se
+     * especifica que se deba mostrar información suya en pantalla (Además de
+     * que esto supondría un grave problema en cuanto a seguridad).
+     */
     @FXML
     public void cerrarSesion() {
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
@@ -122,15 +148,31 @@ public class AdministradorControlador implements Initializable {
 
     }
 
+
+    /***
+     * Método initialize que no ha sido utilizado porque en este caso no es
+     * necesario, pero es obligatorio implementarlo. En casos en los que se necesite
+     * cargar algún dato en la pantalla apenas arranque la aplicación, sería
+     * dentro de este método que se colocaría.
+     *
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
 
+
+    /***
+     * MODIFICAR LUEGO
+     * @param nombre
+     * @return
+     */
     private boolean validarNombre(String nombre) {
         if(nombre.matches("[a-zA-Z ]+")) {
             String nombreSinEspacios = nombre.trim();
-            if(nombreSinEspacios.length() > 0) {
+            if(!nombreSinEspacios.isEmpty()) {
                 return true;
             } else {
                 return false;

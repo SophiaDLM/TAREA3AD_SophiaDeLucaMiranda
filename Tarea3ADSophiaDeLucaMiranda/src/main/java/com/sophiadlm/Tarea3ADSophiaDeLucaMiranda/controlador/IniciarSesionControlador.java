@@ -31,8 +31,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/***
+ *
+ */
 @Controller
 public class IniciarSesionControlador implements Initializable {
+
+    //Elementos relacionados con el archivo FXML:
     @FXML
     private GridPane panelPrincipal;
 
@@ -60,10 +65,12 @@ public class IniciarSesionControlador implements Initializable {
     @FXML
     private ChoiceBox<String> cbParadaInicial;
 
+    //Elementos relacionados con el manejo de las escenas:
     @Lazy
     @Autowired
     private ManejadorEscenas me;
 
+    //Elementos relacionados con la manipulación de la base de datos:
     @Autowired
     private CredencialesServicio cs;
 
@@ -98,8 +105,20 @@ public class IniciarSesionControlador implements Initializable {
         ButtonType confirmar = confirmacion.showAndWait().orElse(ButtonType.CANCEL);
 
         if (confirmar == ButtonType.OK) {
-            me.cambiarEscena(VistaFxml.INICIARSESION);
+            cambiarPanelRegistrarse();
         }
+    }
+
+    @FXML
+    private void cambiarPanelIniciarSesion() {
+        panelPrincipal.setVisible(true);
+        panelRegistrarse.setVisible(false);
+    }
+
+    @FXML
+    private void cambiarPanelRegistrarse() {
+        panelPrincipal.setVisible(false);
+        panelRegistrarse.setVisible(true);
     }
 
     @FXML
@@ -215,6 +234,8 @@ public class IniciarSesionControlador implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        cambiarPanelIniciarSesion();
+
         List<String> paisesNacionalidad = leerPaisesXML();
         cbNacionalidad.getItems().addAll(paisesNacionalidad);
 

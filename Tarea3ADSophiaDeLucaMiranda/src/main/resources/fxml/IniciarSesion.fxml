@@ -61,7 +61,7 @@
                         <Insets left="80.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField fx:id="tfUsuario" prefHeight="30.0" promptText="Introduzca su usuario..." style="-fx-border-color: black; -fx-background-color: white;" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <TextField fx:id="tfUsuario" prefHeight="30.0" promptText="Introduzca su usuario..." style="-fx-border-color: black; -fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets left="8.0" right="40.0" />
                      </GridPane.margin>

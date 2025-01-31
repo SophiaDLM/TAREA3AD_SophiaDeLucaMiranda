@@ -41,4 +41,10 @@ public class EstanciaServicio {
 	public List<Estancia> encontrarTodos() {
 		return estanciaRep.findAll();
 	}
+
+	///
+
+	public List<Estancia> encontrarPorIdPeregrino(Long idPeregrino) {
+		return estanciaRep.findByPeregrinoId(idPeregrino);
+	}
 }

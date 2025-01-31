@@ -14,7 +14,6 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.controlador.PeregrinoControlador">
    <center>
       <GridPane style="-fx-background-color: rgba(97, 194, 123, 0.65);" BorderPane.alignment="CENTER">
@@ -81,6 +80,9 @@
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="13.0" />
+               </font>
             </TextField>
             <Label text="¿Desea exportar su carnet?" GridPane.columnSpan="3" GridPane.rowIndex="5">
                <font>
