@@ -6,10 +6,14 @@ import java.util.Objects;
 
 import jakarta.persistence.*;
 
+/***
+ * Clase Parada del tipo @Entity que generará una tabla en la base de datos y desde la cuál se
+ * podrán manejar los datos gracias al uso de las clases @Service.
+ */
 @Entity
 @Table(name = "Parada")
 public class Parada {
-	
+	//Atributos de la clase:
 	@Id
 	@Column(name = "id", updatable = false, nullable = false)
 	private Long id;
@@ -20,17 +24,20 @@ public class Parada {
 	
 	private String responsable;
 
+	//Representa la relación OneToOne con la tabla credenciales:
 	@OneToOne
 	@PrimaryKeyJoinColumn
 	private Credenciales credenciales;
-	
-	//SIMILAR A PEREGRINO ESTANCIA
+
+	//Representación de la relación OneToMany con la tabla estancia:
 	@OneToMany(mappedBy = "parada", cascade = CascadeType.ALL)
 	private List<Estancia> listaEstancias = new ArrayList<>();
-	
+
+	//Representación de la relación ManyToOne con la tabla peregrino (genera una tabla nueva en la base de datos):
 	@ManyToMany(mappedBy = "listaParadas")
 	private List<Peregrino> listaPeregrinos = new ArrayList<>();
-	
+
+	//Constructores de la clase:
 	public Parada() {
 		
 	}
@@ -42,7 +49,7 @@ public class Parada {
 		this.responsable = responsable;
 	}
 
-	
+	//Getters y Setters de la clase:
 	public Long getId() {
 		return id;
 	}
@@ -99,26 +106,21 @@ public class Parada {
 		this.listaPeregrinos = listaPeregrinos;
 	}
 
+	//Métodos básicos:
 	@Override
 	public String toString() {
 		return "Parada [id=" + id + ", nombre=" + nombre + ", region=" + region + ", responsable=" + responsable + "]";
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(id, nombre, region, responsable);
+	public boolean equals(Object o) {
+		if (o == null || getClass() != o.getClass()) return false;
+		Parada parada = (Parada) o;
+		return region == parada.region && Objects.equals(id, parada.id) && Objects.equals(nombre, parada.nombre) && Objects.equals(responsable, parada.responsable) && Objects.equals(credenciales, parada.credenciales) && Objects.equals(listaEstancias, parada.listaEstancias) && Objects.equals(listaPeregrinos, parada.listaPeregrinos);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Parada other = (Parada) obj;
-		return Objects.equals(id, other.id) && Objects.equals(nombre, other.nombre) && region == other.region
-				&& Objects.equals(responsable, other.responsable);
+	public int hashCode() {
+		return Objects.hash(id, nombre, region, responsable, credenciales, listaEstancias, listaPeregrinos);
 	}
 }

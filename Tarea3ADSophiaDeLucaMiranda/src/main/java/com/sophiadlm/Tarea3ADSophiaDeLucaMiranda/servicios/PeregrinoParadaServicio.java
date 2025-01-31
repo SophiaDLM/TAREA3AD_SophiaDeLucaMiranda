@@ -8,6 +8,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/***
+ * Clase PeregrinoParadaServicio que se encarga de gestionar las transacciones con la base de datos
+ * utilizando métodos personalizados que provienen de la interfaz PeregrinoParadaRepositorio y que ésta,
+ * a su vez, hereda los métodos de JpaRepository.
+ *
+ * Es importante apuntar que los métodos de la interfaz se hicieron con anotaciones @Query, por lo que no
+ * se usó ningún método predefinido.
+ */
 @Service
 public class PeregrinoParadaServicio {
     @Autowired
@@ -16,6 +24,7 @@ public class PeregrinoParadaServicio {
     @Autowired
     private ParadaRepositorio paradaRepositorio;
 
+    //Métodos personalizados:
     public void guardarPeregrinoParada(Long idPeregrino, Long idParada) {
         peregrinoParadaRepositorio.insertarPeregrinoParada(idPeregrino, idParada);
     }

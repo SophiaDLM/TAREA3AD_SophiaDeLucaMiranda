@@ -8,12 +8,17 @@ import org.springframework.stereotype.Service;
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.modelo.Parada;
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.repositorios.ParadaRepositorio;
 
+/***
+ * Clase ParadaServicio que se encarga de gestionar las transacciones con la base de datos
+ * utilizando métodos predefinidos que provienen de la interfaz ParadaRepositorio y que ésta, a su vez,
+ * hereda los métodos de JpaRepository.
+ */
 @Service
 public class ParadaServicio {
-
 	@Autowired
 	private ParadaRepositorio paradaRep;
-	
+
+	//Métodos predefinidos:
 	public Parada guardar(Parada entity) {
 		return paradaRep.save(entity);
 	}

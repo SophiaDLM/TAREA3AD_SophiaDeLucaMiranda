@@ -6,10 +6,14 @@ import java.util.Objects;
 
 import jakarta.persistence.*;
 
+/***
+ * Clase Peregrino del tipo @Entity que generará una tabla en la base de datos y desde la cuál se
+ * podrán manejar los datos gracias al uso de las clases @Service.
+ */
 @Entity
 @Table(name = "Peregrino")
 public class Peregrino {
-	
+	//Atributos de la clase:
 	@Id
 	@Column(name = "id", updatable = false, nullable = false)
 	private Long id;
@@ -18,26 +22,25 @@ public class Peregrino {
 	
 	private String nacionalidad;
 
+	//Representa la relación OneToOne con la tabla credenciales:
 	@OneToOne
 	@PrimaryKeyJoinColumn
 	private Credenciales credenciales;
 	
-	//REPRESENTA LA RELACIÓN ENTRE PEREGRINO Y CARNET
+	//Representa la relación OneToOne con la tabla carnet:
 	@OneToOne(mappedBy = "peregrino", cascade = CascadeType.ALL)
 	private Carnet carnet;
 	
-	//REPRESENTA LA RELACIÓN ENTRE ESTANCIAS Y PEREGRINO - BIDIRECCIONAL
+	//Representación de la relación OneToMany con la tabla estancia:
 	@OneToMany(mappedBy = "peregrino", cascade = CascadeType.ALL)
 	private List<Estancia> listaEstancias = new ArrayList<>();
-	
-	//REPRESENTA LA RELACIÓN ENTRE PARADA Y PEREGRINO
-	//CREA NUEVA TABLA CON LOS IDS DE AMBAS TABLAS
-	//MÁS TARDE ES POSIBLE QUE SE AÑADA UNA COLUMNA DE TIPO FECHA PARA
-	//PERMITIR MÁS REGISTROS EN OTROS DÍAS
+
+	//Representación de la relación ManyToOne con la tabla parada (genera una tabla nueva en la base de datos):
 	@ManyToMany
 	@JoinTable(name = "PeregrinoParada", joinColumns = @JoinColumn(name = "idPeregrino"), inverseJoinColumns = @JoinColumn(name = "idParada"))
 	private List<Parada> listaParadas = new ArrayList<>();
-	
+
+	//Constructores de la clase:
 	public Peregrino() {
 		
 	}
@@ -48,7 +51,7 @@ public class Peregrino {
 		this.nacionalidad = nacionalidad;
 	}
 	
-	
+	//Getters y Setters de la clase:
 	public Long getId() {
 		return id;
 	}
@@ -105,27 +108,21 @@ public class Peregrino {
 		this.listaParadas = listaParadas;
 	}
 
-	//EDITAR LUEGO
+	//Métodos básicos:
 	@Override
 	public String toString() {
 		return "Peregrino [id=" + id + ", nombre=" + nombre + ", nacionalidad=" + nacionalidad + "]";
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(carnet, id, nacionalidad, nombre);
+	public boolean equals(Object o) {
+		if (o == null || getClass() != o.getClass()) return false;
+		Peregrino peregrino = (Peregrino) o;
+		return Objects.equals(id, peregrino.id) && Objects.equals(nombre, peregrino.nombre) && Objects.equals(nacionalidad, peregrino.nacionalidad) && Objects.equals(credenciales, peregrino.credenciales) && Objects.equals(carnet, peregrino.carnet) && Objects.equals(listaEstancias, peregrino.listaEstancias) && Objects.equals(listaParadas, peregrino.listaParadas);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Peregrino other = (Peregrino) obj;
-		return Objects.equals(carnet, other.carnet) && Objects.equals(id, other.id)
-				&& Objects.equals(nacionalidad, other.nacionalidad) && Objects.equals(nombre, other.nombre);
+	public int hashCode() {
+		return Objects.hash(id, nombre, nacionalidad, credenciales, carnet, listaEstancias, listaParadas);
 	}
 }

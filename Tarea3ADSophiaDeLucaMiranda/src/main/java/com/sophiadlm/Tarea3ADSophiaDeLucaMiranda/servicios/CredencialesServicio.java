@@ -9,12 +9,19 @@ import org.springframework.stereotype.Service;
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.modelo.Credenciales;
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.repositorios.CredencialesRepositorio;
 
+/***
+ * Clase CredencialesServicio que se encarga de gestionar las transacciones con la base de datos
+ * utilizando métodos predefinidos y personalizados que provienen de la interfaz CredencialesRepositorio
+ * y que ésta, a su vez, hereda los métodos de JpaRepository.
+ *
+ * Es importante apuntar que la interfaz contiene métodos anotados con @Query.
+ */
 @Service
 public class CredencialesServicio {
-	
 	@Autowired
 	private CredencialesRepositorio credencialesRep;
-	
+
+	//Métodos predefinidos:
 	public Credenciales guardar(Credenciales entity) {
 		return credencialesRep.save(entity);
 	}
@@ -43,8 +50,7 @@ public class CredencialesServicio {
 		return credencialesRep.findAll();
 	}
 
-	///
-
+	//Métodos personalizados:
 	public Credenciales encontrarPorNombreUsuario(String nombre) {
 		return credencialesRep.findByNombreUsuario(nombre);
 	}

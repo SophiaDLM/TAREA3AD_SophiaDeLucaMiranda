@@ -38,7 +38,6 @@ import java.util.ResourceBundle;
  */
 @Controller
 public class PeregrinoControlador implements Initializable {
-
     //Elementos relacionados con el archivo FXML:
     @FXML
     private TextField tfNombre;
@@ -92,7 +91,6 @@ public class PeregrinoControlador implements Initializable {
         }
     }
 
-
     /***
      * Método mostrarAyuda que, como está incompleto, sólo se encarga
      * de mostrar una alerta informativa.
@@ -106,7 +104,6 @@ public class PeregrinoControlador implements Initializable {
         sinImplementar.showAndWait();
     }
 
-
     /***
      * Método editarPeregrino que, como no está implementado, sólo se encarga
      * de mostrar una alerta informativa.
@@ -119,7 +116,6 @@ public class PeregrinoControlador implements Initializable {
         sinImplementar.setContentText("La edición aún no está disponible");
         sinImplementar.showAndWait();
     }
-
 
     /***
      * Método exportarCarnetXML que recoge los datos de la base de datos y construye,
@@ -275,7 +271,6 @@ public class PeregrinoControlador implements Initializable {
         }
     }
 
-
     /***
      * Método initialize que sirve para cargar valores al arrancar la aplicación.
      *
@@ -289,7 +284,6 @@ public class PeregrinoControlador implements Initializable {
         tfNombre.setText(peregrino.getNombre());
         tfNacionalidad.setText(peregrino.getNacionalidad());
     }
-
 
     /***
      * Método obtenerPeregrino que sirve para obtener el objeto peregrino de la base
@@ -312,7 +306,6 @@ public class PeregrinoControlador implements Initializable {
         return peregrinoActual;
     }
 
-
     /***
      * Método obtenerCarnet que sirve para obtener el objeto carnet del peregrino.
      *
@@ -323,7 +316,6 @@ public class PeregrinoControlador implements Initializable {
         Carnet carnetActual = cas.encontrarPorId(idPeregrino);
         return carnetActual;
     }
-
 
     /***
      * Método obtenerParadas que sirve para obtener una lista de todas las paradas asociadas
@@ -336,7 +328,6 @@ public class PeregrinoControlador implements Initializable {
         List<Parada> paradasActuales = pps.obtenerParadaPeregrino(idPeregrino);
         return paradasActuales;
     }
-
 
     /***
      * Método obtenerEstancias que sirve para obtener una lista de todas las estancias asociadas

@@ -5,10 +5,14 @@ import java.util.Objects;
 
 import jakarta.persistence.*;
 
+/***
+ * Clase Carnet del tipo @Entity que generará una tabla en la base de datos y desde la cuál se
+ * podrán manejar los datos gracias al uso de las clases @Service.
+ */
 @Entity
 @Table(name = "Carnet")
 public class Carnet {
-	
+	//Atributos de la clase:
 	@Id
 	@Column(name = "id", updatable = false, nullable = false)
 	private Long id;
@@ -19,21 +23,17 @@ public class Carnet {
 	
 	private int nvips;
 	
-	
-	//BREVE ANOTACIÓN: SE COLOCA DE ESTA MANERA PARA QUE EL ID DEL
-	//CARNET COINCIDA CON EL DE PEREGRINO EN VEZ DE QUE EL CARNET
-	//TENGA SU PROPIO ID, ASÍ, SI NO EXISTE EL PEREGRINO, TAMPOCO
-	//EL CARNET - [EXPLICAR MEJOR AL HACER LA DOCUMENTACIÓN EN EL
-	//CÓDIGO (JAVADOC)]
+	//Representa la relación OneToOne con la tabla peregrino:
 	@OneToOne
 	@PrimaryKeyJoinColumn(name = "id", foreignKey = @ForeignKey(name = "fk_carnet_peregrino"))
 	private Peregrino peregrino;
 	
-	//ESTABLECE LA RELACIÓN ENTRE CARNET Y PARADA UNIDIRECCIONAL
-	@OneToOne
+	//Representa la relación ManyToOne con la tabla parada para establecer la parada inicial:
+	@ManyToOne
 	@JoinColumn(name = "idParadaInicial", nullable = false)
 	private Parada paradaInicial;
 
+	//Constructores de la clase:
 	public Carnet() {
 
 	}
@@ -45,7 +45,7 @@ public class Carnet {
 		this.nvips = 0;
 	}
 
-	
+	//Getters y Setters de la clase:
 	public Long getId() {
 		return id;
 	}
@@ -94,26 +94,21 @@ public class Carnet {
 		this.peregrino = peregrino;
 	}
 
+	//Métodos básicos:
 	@Override
 	public String toString() {
 		return "Carnet [id=" + id + ", fechaexp=" + fechaexp + ", distancia=" + distancia + ", nvips=" + nvips + "]";
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(distancia, fechaexp, id, nvips);
+	public boolean equals(Object o) {
+		if (o == null || getClass() != o.getClass()) return false;
+		Carnet carnet = (Carnet) o;
+		return Double.compare(distancia, carnet.distancia) == 0 && nvips == carnet.nvips && Objects.equals(id, carnet.id) && Objects.equals(fechaexp, carnet.fechaexp) && Objects.equals(peregrino, carnet.peregrino) && Objects.equals(paradaInicial, carnet.paradaInicial);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Carnet other = (Carnet) obj;
-		return Double.doubleToLongBits(distancia) == Double.doubleToLongBits(other.distancia)
-				&& Objects.equals(fechaexp, other.fechaexp) && Objects.equals(id, other.id) && nvips == other.nvips;
+	public int hashCode() {
+		return Objects.hash(id, fechaexp, distancia, nvips, peregrino, paradaInicial);
 	}
 }

@@ -10,6 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/***
+ * Interfaz PeregrinoParadaRepositorio que hereda de JpaRepository y se inyecta en PeregrinoParadaServicio.
+ *
+ * Tiene consultas específicas anotadas con @Query para poder manipular la información de la base de datos.
+ * En este caso es así porque la tabla peregrino_parada se genera automáticamente y no hay una clase Entity que
+ * la pueda gestionar como en otros casos.
+ */
 @Repository
 public interface PeregrinoParadaRepositorio extends JpaRepository<Peregrino, Long> {
     @Modifying

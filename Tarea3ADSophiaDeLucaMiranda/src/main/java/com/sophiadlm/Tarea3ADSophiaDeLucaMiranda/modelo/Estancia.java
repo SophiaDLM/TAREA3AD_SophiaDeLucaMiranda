@@ -12,10 +12,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+/***
+ * Clase Estancia del tipo @Entity que generará una tabla en la base de datos y desde la cuál se
+ * podrán manejar los datos gracias al uso de las clases @Service.
+ */
 @Entity
 @Table(name = "Estancia")
 public class Estancia {
-	
+	//Atributos de la clase:
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", updatable = false, nullable = false)
@@ -25,16 +29,17 @@ public class Estancia {
 	
 	private boolean vip = false;
 	
-	//RELACIÓN ENTRE PEREGRINO Y ESTANCIA - EXPLICAR LUEGO
+	//Representa la relación ManyToOne con la tabla peregrino (crea foreign keys):
 	@ManyToOne
 	@JoinColumn(name = "idPeregrino", nullable = false)
 	private Peregrino peregrino;
 	
-	//RELACIÓN ENTRE PARADA Y ESTANCIA
+	//Representa la relación ManyToOne con la tabla parada (crea foreign keys):
 	@ManyToOne
 	@JoinColumn(name = "idParada", nullable = false)
 	private Parada parada;
-	
+
+	//Constructores de la clase:
 	public Estancia() {
 		
 	}
@@ -44,7 +49,7 @@ public class Estancia {
 		this.vip = vip;
 	}
 
-	
+	//Getters y Setters de la clase:
 	public Long getId() {
 		return id;
 	}
@@ -85,25 +90,21 @@ public class Estancia {
 		this.parada = parada;
 	}
 
+	//Métodos básicos:
 	@Override
 	public String toString() {
 		return "Estancia [id=" + id + ", fecha=" + fecha + ", vip=" + vip + "]";
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hash(fecha, id, vip);
+	public boolean equals(Object o) {
+		if (o == null || getClass() != o.getClass()) return false;
+		Estancia estancia = (Estancia) o;
+		return vip == estancia.vip && Objects.equals(id, estancia.id) && Objects.equals(fecha, estancia.fecha) && Objects.equals(peregrino, estancia.peregrino) && Objects.equals(parada, estancia.parada);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Estancia other = (Estancia) obj;
-		return Objects.equals(fecha, other.fecha) && Objects.equals(id, other.id) && vip == other.vip;
+	public int hashCode() {
+		return Objects.hash(id, fecha, vip, peregrino, parada);
 	}
 }

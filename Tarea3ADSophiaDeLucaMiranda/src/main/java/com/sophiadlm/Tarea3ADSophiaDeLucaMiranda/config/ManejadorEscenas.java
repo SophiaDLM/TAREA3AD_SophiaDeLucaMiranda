@@ -7,6 +7,9 @@ import javafx.stage.Stage;
 
 import java.util.Objects;
 
+/***
+ * Clase ManejadorEscenas que se encarga de cargar una escena específica, prepararla, cambiarla, etc.
+ */
 public class ManejadorEscenas {
     private final Stage escenaPrincipal;
     private final CargadorSpringFXML cSpringFxml;

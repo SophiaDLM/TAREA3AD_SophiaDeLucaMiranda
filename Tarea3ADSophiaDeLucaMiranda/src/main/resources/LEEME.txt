@@ -21,3 +21,5 @@ un buscador de archivos para que podamos añadir todos los .jar de la librería 
 Add VM options e insertar lo siguiente: --module-path "ruta\del\archivo\javafx-sdk\lib" --add-modules javafx.controls,javafx.fxml. (*)
 
 (*) Tiene que estar añadida la librería de JavaFX antes de realizar la configuración.
+
+En la base de datos será necesario crear manualmente el usuario ADMINISTRADOR.

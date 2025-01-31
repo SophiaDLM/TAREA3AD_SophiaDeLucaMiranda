@@ -2,10 +2,7 @@ package com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.controlador;
 
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.config.ManejadorEscenas;
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.modelo.*;
-import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.servicios.CarnetServicio;
-import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.servicios.CredencialesServicio;
-import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.servicios.ParadaServicio;
-import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.servicios.PeregrinoServicio;
+import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.servicios.*;
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.vista.VistaFxml;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,11 +29,15 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 /***
+ * Clase IniciarSesionControlador que se encarga de manejar las acciones
+ * disponibles tanto de un usuario invitado como de un usuario existente en la base de datos.
+ * Estás acciones son acceder a la ayuda de usuario (no implementada aún), iniciar sesión con sus credenciales,
+ * registrarse como peregrino y cerrar sesión si así lo desea.
  *
+ * Esta clase implementa Initializable para el uso de JavaFX.
  */
 @Controller
 public class IniciarSesionControlador implements Initializable {
-
     //Elementos relacionados con el archivo FXML:
     @FXML
     private GridPane panelPrincipal;
@@ -86,7 +87,13 @@ public class IniciarSesionControlador implements Initializable {
     @Autowired
     private ParadaServicio pas;
 
+    @Autowired
+    private PeregrinoParadaServicio pps;
 
+    /***
+     * Método mostrarAyuda que, como está incompleto, sólo se encarga
+     * de mostrar una alerta informativa.
+     */
     @FXML
     public void mostrarAyuda() {
         Alert sinImplementar = new Alert(Alert.AlertType.INFORMATION);
@@ -96,6 +103,10 @@ public class IniciarSesionControlador implements Initializable {
         sinImplementar.showAndWait();
     }
 
+    /***
+     * Método volver que se utiliza para cambiar el panel de registrar peregrino al de iniciar sesión y borra los
+     * datos almacenados en el formulario después de confirmar que quiere volver.
+     */
     @FXML
     public void volver() {
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
@@ -105,22 +116,40 @@ public class IniciarSesionControlador implements Initializable {
         ButtonType confirmar = confirmacion.showAndWait().orElse(ButtonType.CANCEL);
 
         if (confirmar == ButtonType.OK) {
-            cambiarPanelRegistrarse();
+            cambiarPanelIniciarSesion();
+            tfUsuarioP.clear();
+            pfContraseñaP.clear();
+            tfNombre.clear();
+            cbNacionalidad.getSelectionModel().clearSelection();
+            cbParadaInicial.getSelectionModel().clearSelection();
         }
     }
 
+    /***
+     * Método cambiarPanelIniciarSesion que cambia la visibilidad de los paneles.
+     */
     @FXML
-    private void cambiarPanelIniciarSesion() {
+    public void cambiarPanelIniciarSesion() {
         panelPrincipal.setVisible(true);
         panelRegistrarse.setVisible(false);
     }
 
+    /***
+     * Método cambiarPanelRegistrarse que cambia la visibilidad de los paneles.
+     */
     @FXML
-    private void cambiarPanelRegistrarse() {
+    public void cambiarPanelRegistrarse() {
         panelPrincipal.setVisible(false);
         panelRegistrarse.setVisible(true);
     }
 
+    /***
+     * Método iniciarSesion que obtiene las credenciales de la base de datos, las almacena en un objeto del
+     * tipo SesionUsuario para utilizarlas posteriormente y en función del tipo de usuario que esté accediendo,
+     * se le muestra la vista correspondiente.
+     *
+     * Si no se puede encontrar el usuario, se lanza una alerta infomando del error.
+     */
     @FXML
     public void iniciarSesion() {
         Credenciales credenciales = cs.encontrarPorNombreUsuario(tfUsuario.getText());
@@ -136,12 +165,23 @@ public class IniciarSesionControlador implements Initializable {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Error");
             error.setHeaderText("No se ha encontrado al usuario");
-            error.setContentText("Regístrese o asegúrese que ha introducido la contraseña correctamente");
+            error.setContentText("Regístrese o asegúrese que ha introducido los datos correctamente");
             error.showAndWait();
         }
     }
 
-    //EDITAR MAÑANA
+    /***
+     * Método nuevoPeregrino que añade un nuevo peregrino, obteniendo los datos de los campos en el formulario
+     * y validándolos. Si todos los datos introducidos son válidos, se crea el objeto credenciales, el peregrino con
+     * su carnet con la referencia a la parada inicial y se registra en la tabla peregrino_parada que pasó por allí.
+     *
+     * Si todo el proceso sale bien, se lanza una alerta, sino, se avisa de que ha ocurrido una excepción o los
+     * datos son inválidos.
+     *
+     * OJO - Es posible que se guarden algunos datos en la base de datos, pero no todos, puesto que faltaría
+     * agregar una variable boolean que controlara que si todo es válido, se realicen las operaciones de inserción.
+     * Esto queda como mejora para la siguiente tarea.
+     */
     @FXML
     public void nuevoPeregrino() {
         try {
@@ -171,12 +211,12 @@ public class IniciarSesionControlador implements Initializable {
                                     nuevoCarnet.setParadaInicial(paradaInicial);
                                     nuevoCarnet = cas.guardar(nuevoCarnet);
 
-                                    //AGREGAR PEREGRINO-PARADA INSERCIÓN DE DATOS -> DESPUÉS CUANDO SE PONGA A PUNTA EL CÓDIGO
+                                    pps.guardarPeregrinoParada(nuevoPeregrino.getId(), nuevoCarnet.getParadaInicial().getId());
 
-                                    //NO LANZA LA ALERTA ????
-                                    Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+                                    Alert confirmacion = new Alert(Alert.AlertType.INFORMATION);
                                     confirmacion.setTitle("Operación exitosa");
                                     confirmacion.setHeaderText("Se ha registrado el usuario y la parada exitosamente");
+                                    confirmacion.showAndWait();
 
                                 } else {
                                     Alert error = new Alert(Alert.AlertType.ERROR);
@@ -228,10 +268,20 @@ public class IniciarSesionControlador implements Initializable {
             }
 
         } catch(Exception e) {
-            System.out.println(e.getMessage());
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Fatal Error");
+            error.setHeaderText("Ocurrió una excepción desconocida");
+            error.setContentText(e.getMessage());
+            error.showAndWait();
         }
     }
 
+    /***
+     * Método initialize que sirve para cargar valores al arrancar la aplicación.
+     *
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         cambiarPanelIniciarSesion();
@@ -250,8 +300,16 @@ public class IniciarSesionControlador implements Initializable {
         cbParadaInicial.getItems().addAll(elementosParada);
     }
 
+    /***
+     * Método validarNombre que obtiene una cadena de caracteres y se asegura, mediante el uso
+     * de una expresión regular muy sencilla, que tenga los caracteres permitidos. Además, verifica que
+     * la cadena no esté vacía o solo contenga espacios en blanco.
+     *
+     * @param nombre con la cadena de caracteres que se quiere validar
+     * @return true si pasa la validación, false sino.
+     */
     private boolean validarNombre(String nombre) {
-        if(nombre.matches("[a-zA-Z ]+")) {
+        if(nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
             String nombreSinEspacios = nombre.trim();
             if(!nombreSinEspacios.isEmpty()) {
                 return true;
@@ -263,6 +321,12 @@ public class IniciarSesionControlador implements Initializable {
         }
     }
 
+    /***
+     * Método leerPaisesXML que utiliza la tecnología DOM para leer un fichero del tipo XML y extraer sus datos,
+     * almacenándolos en una lista que se utilizará posteriormente para poder registrar un peregrino nuevo.
+     *
+     * @return listaPaisesXML con los países que contenía el archivo XML.
+     */
     private List<String> leerPaisesXML() {
         List<String> listaPaisesXML = new ArrayList<>();
 
@@ -284,11 +348,25 @@ public class IniciarSesionControlador implements Initializable {
             }
 
         } catch (ParserConfigurationException pce) {
-            System.out.println("Error: " + pce.getMessage());
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Fatal Error");
+            error.setHeaderText("Ocurrió una excepción del tipo ParserConfigurationException");
+            error.setContentText(pce.getMessage());
+            error.showAndWait();
+
         } catch (IOException ioe) {
-            System.out.println("Error: " + ioe.getMessage());
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Fatal Error");
+            error.setHeaderText("Ocurrió una excepción del tipo IOException");
+            error.setContentText(ioe.getMessage());
+            error.showAndWait();
+
         } catch (SAXException saxe) {
-            System.out.println("Error: " + saxe.getMessage());
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Fatal Error");
+            error.setHeaderText("Ocurrió una excepción del tipo SAXException");
+            error.setContentText(saxe.getMessage());
+            error.showAndWait();
         }
 
         return listaPaisesXML;

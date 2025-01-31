@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.modelo.Parada;
 
+/***
+ * Interfaz ParadaRepositorio que hereda de JpaRepository y se inyecta en ParadaServicio.
+ */
 @Repository
 public interface ParadaRepositorio extends JpaRepository<Parada, Long> {
 

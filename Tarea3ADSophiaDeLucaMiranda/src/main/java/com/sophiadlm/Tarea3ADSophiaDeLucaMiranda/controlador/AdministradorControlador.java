@@ -27,7 +27,6 @@ import java.util.ResourceBundle;
  */
 @Controller
 public class AdministradorControlador implements Initializable {
-
     //Elementos relacionados con el archivo FXML:
     @FXML
     private TextField tfNombre;
@@ -53,7 +52,6 @@ public class AdministradorControlador implements Initializable {
     @Autowired
     private ParadaServicio ps;
 
-
     /***
      * Método mostrarAyuda que, como está incompleto, sólo se encarga
      * de mostrar una alerta informativa.
@@ -66,7 +64,6 @@ public class AdministradorControlador implements Initializable {
         sinImplementar.setContentText("La ayuda para el usuario aún no está disponible");
         sinImplementar.showAndWait();
     }
-
 
     /***
      * Método cerrarSesion que lanza una alerta pidiendo al usuario que
@@ -91,63 +88,74 @@ public class AdministradorControlador implements Initializable {
         }
     }
 
-    //SACAR MÉTODO PARA LAS ALERTAS Y EVITAR REPETICIÓN DE CÓDIGO
+    /***
+     * Método nuevaParada que obtiene los datos de los campos en la interfaz gráfica, los valida y posteriormente
+     * los registra en la base de datos, lanzándo una alerta si todo ha salido bien.
+     */
     @FXML
     public void nuevaParada() {
-        String nombre = tfNombre.getText();
-        char region = tfRegion.getText().charAt(0);
-        String usuario = tfUsuario.getText();
-        String contraseña = pfContraseña.getText();
+        try {
+            String nombre = tfNombre.getText();
+            char region = tfRegion.getText().charAt(0);
+            String usuario = tfUsuario.getText();
+            String contraseña = pfContraseña.getText();
 
-        if(validarNombre(nombre)) {
-            if(Character.isLetter(region)) {
-                if(usuario.matches("[a-zA-Z0-9_]+")) {
-                    if(contraseña.matches("[a-zA-Z0-9_]{8}")) {
-                        Credenciales nuevasCredenciales = new Credenciales(usuario, contraseña, TipoUsuario.PARADA);
-                        nuevasCredenciales = cs.guardar(nuevasCredenciales);
+            if (validarNombre(nombre)) {
+                if (Character.isLetter(region)) {
+                    if (usuario.matches("[a-zA-Z0-9_]+")) {
+                        if (contraseña.matches("[a-zA-Z0-9_]{8}")) {
+                            Credenciales nuevasCredenciales = new Credenciales(usuario, contraseña, TipoUsuario.PARADA);
+                            nuevasCredenciales = cs.guardar(nuevasCredenciales);
 
-                        Parada nuevaParada = new Parada(nuevasCredenciales.getId(), nombre, region, usuario);
-                        nuevaParada = ps.guardar(nuevaParada);
+                            Parada nuevaParada = new Parada(nuevasCredenciales.getId(), nombre, region, usuario);
+                            nuevaParada = ps.guardar(nuevaParada);
 
-                        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-                        confirmacion.setTitle("Operación exitosa");
-                        confirmacion.setHeaderText("Se ha registrado el usuario y la parada exitosamente");
+                            Alert confirmacion = new Alert(Alert.AlertType.INFORMATION);
+                            confirmacion.setTitle("Operación Exitosa");
+                            confirmacion.setHeaderText("Se ha registrado el usuario y la parada exitosamente");
+                            confirmacion.showAndWait();
+
+                        } else {
+                            Alert error = new Alert(Alert.AlertType.ERROR);
+                            error.setTitle("Error");
+                            error.setHeaderText("Contraseña inválida");
+                            error.setContentText("Debe contener números, letras, símbolos especiales como _, ! o ? y una longitud de 8 caracteres");
+                            error.showAndWait();
+
+                        }
 
                     } else {
                         Alert error = new Alert(Alert.AlertType.ERROR);
                         error.setTitle("Error");
-                        error.setHeaderText("Contraseña inválida");
-                        error.setContentText("Debe contener números, letras, símbolos especiales como _, ! o ? y una longitud de 8 caracteres");
+                        error.setHeaderText("Nombre de usuario inválido");
+                        error.setContentText("El usuario solo puede tener números, letras y guión bajo");
                         error.showAndWait();
-
                     }
 
                 } else {
                     Alert error = new Alert(Alert.AlertType.ERROR);
                     error.setTitle("Error");
-                    error.setHeaderText("Nombre de usuario inválido");
-                    error.setContentText("El usuario solo puede tener números, letras y guión bajo");
+                    error.setHeaderText("Región inválida");
+                    error.setContentText("La región solo puede ser una letra");
                     error.showAndWait();
                 }
 
             } else {
                 Alert error = new Alert(Alert.AlertType.ERROR);
                 error.setTitle("Error");
-                error.setHeaderText("Región inválida");
-                error.setContentText("La región solo puede ser una letra");
+                error.setHeaderText("Nombre inválido");
+                error.setContentText("El nombre no puede estar vacio o contener caracteres que no sean letras");
                 error.showAndWait();
             }
 
-        } else {
+        } catch (Exception e) {
             Alert error = new Alert(Alert.AlertType.ERROR);
-            error.setTitle("Error");
-            error.setHeaderText(null);
-            error.setContentText("El nombre no puede estar vacio");
+            error.setTitle("Fatal Error");
+            error.setHeaderText("Ocurrió una excepción desconocida");
+            error.setContentText(e.getMessage());
             error.showAndWait();
         }
-
     }
-
 
     /***
      * Método initialize que no ha sido utilizado porque en este caso no es
@@ -163,14 +171,16 @@ public class AdministradorControlador implements Initializable {
 
     }
 
-
     /***
-     * MODIFICAR LUEGO
-     * @param nombre
-     * @return
+     * Método validarNombre que obtiene una cadena de caracteres y se asegura, mediante el uso
+     * de una expresión regular muy sencilla, que tenga los caracteres permitidos. Además, verifica que
+     * la cadena no esté vacía o solo contenga espacios en blanco.
+     *
+     * @param nombre con la cadena de caracteres que se quiere validar
+     * @return true si pasa la validación, false sino.
      */
     private boolean validarNombre(String nombre) {
-        if(nombre.matches("[a-zA-Z ]+")) {
+        if(nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
             String nombreSinEspacios = nombre.trim();
             if(!nombreSinEspacios.isEmpty()) {
                 return true;

@@ -4,12 +4,14 @@ import java.util.Objects;
 
 import jakarta.persistence.*;
 
-//DOCUMENTAR - NO MÁS CAMBIOS AQUÍ
-
+/***
+ * Clase Credenciales del tipo @Entity que generará una tabla en la base de datos y desde la cuál se
+ * podrán manejar los datos gracias al uso de las clases @Service.
+ */
 @Entity
 @Table(name = "Credenciales")
 public class Credenciales {
-	
+	//Atributos de la clase:
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", updatable = false, nullable = false)
@@ -22,7 +24,7 @@ public class Credenciales {
 	@Enumerated(EnumType.STRING)
 	private TipoUsuario tipoUsuario;
 
-
+	//Constructores de la clase:
 	public Credenciales() {
 		
 	}
@@ -33,7 +35,7 @@ public class Credenciales {
 		this.tipoUsuario = tipoUsuario;
 	}
 
-	
+	//Getters y Setters de la clase:
 	public Long getId() {
 		return id;
 	}
@@ -66,7 +68,7 @@ public class Credenciales {
 		this.tipoUsuario = tipoUsuario;
 	}
 
-	
+	//Métodos básicos:
 	@Override
 	public int hashCode() {
 		return Objects.hash(contraseña, id, nombreUsuario, tipoUsuario);

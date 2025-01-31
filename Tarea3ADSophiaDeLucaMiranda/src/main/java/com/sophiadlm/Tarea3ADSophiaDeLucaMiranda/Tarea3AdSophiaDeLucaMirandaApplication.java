@@ -11,9 +11,10 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import java.io.IOException;
 
-
-//ES PROBABLE QUE HAYA CAMBIOS SIGNIFICATIVOS DESPUÉS
-
+/***
+ * Clase Tarea3AdSophiaDeLucaMirandaApplication que contiene los métodos necesarios para
+ * arrancar la aplicación.
+ */
 @SpringBootApplication
 public class Tarea3AdSophiaDeLucaMirandaApplication extends Application {
 	protected ConfigurableApplicationContext contextoAplicacion;
