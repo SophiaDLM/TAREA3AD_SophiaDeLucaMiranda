@@ -6,9 +6,13 @@ import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.servicios.*;
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.vista.VistaFxml;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
+import javafx.scene.web.WebView;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
@@ -97,11 +101,35 @@ public class PeregrinoControlador implements Initializable {
      */
     @FXML
     public void mostrarAyuda() {
-        Alert sinImplementar = new Alert(Alert.AlertType.INFORMATION);
-        sinImplementar.setTitle("Ayuda No Implementada");
-        sinImplementar.setHeaderText("¡Oops!");
-        sinImplementar.setContentText("La ayuda para el usuario aún no está disponible");
-        sinImplementar.showAndWait();
+        try{
+            WebView webview = new WebView();
+
+            URL archivoAyuda = getClass().getClassLoader().getResource("ayuda/help.html");
+            webview.getEngine().load(archivoAyuda.toExternalForm());
+
+            Stage escenarioAyuda = new Stage();
+
+            Scene escenaAyuda = new Scene(webview, 600, 600);
+            escenarioAyuda.setScene(escenaAyuda);
+            escenarioAyuda.setTitle("Ayuda");
+            escenarioAyuda.initModality(Modality.APPLICATION_MODAL);
+            escenarioAyuda.setResizable(false);
+            escenarioAyuda.show();
+
+        } catch(NullPointerException npe) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Fatal Error");
+            error.setHeaderText("Ocurrió una excepción del tipo NullPointerException");
+            error.setContentText(npe.getMessage());
+            error.showAndWait();
+
+        } catch(Exception e) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Fatal Error");
+            error.setHeaderText("Ocurrió una excepción desconocida");
+            error.setContentText(e.getMessage());
+            error.showAndWait();
+        }
     }
 
     /***

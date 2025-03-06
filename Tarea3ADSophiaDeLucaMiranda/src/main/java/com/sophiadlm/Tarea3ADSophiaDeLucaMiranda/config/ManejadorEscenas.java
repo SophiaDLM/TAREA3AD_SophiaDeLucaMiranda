@@ -3,6 +3,7 @@ package com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.config;
 import com.sophiadlm.Tarea3ADSophiaDeLucaMiranda.vista.VistaFxml;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 import java.util.Objects;
@@ -52,6 +53,7 @@ public class ManejadorEscenas {
         }
     }
 
+    //EDITAR LUEGO PARA LA AYUDA
     private Scene prepararEscena(Parent nodoRaiz) {
         Scene escena = escenaPrincipal.getScene();
 
