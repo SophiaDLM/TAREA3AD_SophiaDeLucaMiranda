@@ -140,8 +140,8 @@ public class PeregrinoControlador implements Initializable {
     }
 
     /***
-     * Método editarPeregrino que, como no está implementado, sólo se encarga
-     * de mostrar una alerta informativa.
+     * Método editarPeregrino que cambia la visibilidad del botón de editar una vez pulsado para mostrar el botón de
+     * guardar y permite que los textfields sean editables.
      */
     @FXML
     public void editarPeregrino() {
@@ -152,6 +152,11 @@ public class PeregrinoControlador implements Initializable {
         tfEmail.setEditable(true);
     }
 
+    /***
+     * Método guardarPeregrino que funciona al presionar el botón de guardar. Toma los datos de los textfield y los valida
+     * para posteriormente actualizar la base de datos, evitar que se editen los campos y cambiar la visibilidad de los botones,
+     * escondiendo el de guardar.
+     */
     @FXML
     public void guardarPeregrino() {
         try {

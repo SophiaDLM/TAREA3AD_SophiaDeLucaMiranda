@@ -167,6 +167,12 @@ public class IniciarSesionControlador implements Initializable {
         }
     }
 
+    /***
+     * Método verContraseña que obtiene la contraseña introducida en un password field, cambia la visibilidad del password field
+     * junto con la visibilidad del botón con ícono de ojo, haciéndolos invisible, coloca la contraseña que se obtuvo
+     * anteriormente en el textfield habilitado para ver la contraseña y le cambia la visibilidad tanto a ese componente como al
+     * botón con el ojo tachado.
+     */
     @FXML
     public void verContraseña() {
         String contraseña = pfContraseña.getText();
@@ -180,6 +186,12 @@ public class IniciarSesionControlador implements Initializable {
         btnOcultarContra.setVisible(true);
     }
 
+    /***
+     * Método ocultarContraseña que obtiene la contraseña introducida en un textfield, cambia la visibilidad del textfield
+     * junto con la visibilidad del botón con ícono de ojo tachado, haciéndolos invisible, coloca la contraseña que se obtuvo
+     * anteriormente en el password field habilitado para introducir la contraseña y le cambia la visibilidad tanto a ese componente como al
+     * botón con el ojo.
+     */
     @FXML
     public void ocultarContraseña() {
         String contraseña = tfMostrarContra.getText();
