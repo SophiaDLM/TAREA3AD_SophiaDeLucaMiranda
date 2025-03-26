@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.web.WebView;
@@ -47,7 +48,13 @@ public class PeregrinoControlador implements Initializable {
     private TextField tfNombre;
 
     @FXML
-    private TextField tfNacionalidad;
+    private TextField tfEmail;
+
+    @FXML
+    private Button btnEditar;
+
+    @FXML
+    private Button btnGuardar;
 
     //Elementos relacionados con el manejo de las escenas:
     @Lazy
@@ -138,11 +145,62 @@ public class PeregrinoControlador implements Initializable {
      */
     @FXML
     public void editarPeregrino() {
-        Alert sinImplementar = new Alert(Alert.AlertType.INFORMATION);
-        sinImplementar.setTitle("Edición No Implementada");
-        sinImplementar.setHeaderText("¡Oops!");
-        sinImplementar.setContentText("La edición aún no está disponible");
-        sinImplementar.showAndWait();
+        btnEditar.setVisible(false);
+        btnGuardar.setVisible(true);
+
+        tfNombre.setEditable(true);
+        tfEmail.setEditable(true);
+    }
+
+    @FXML
+    public void guardarPeregrino() {
+        try {
+            String nombreNuevo = tfNombre.getText();
+            String emailNuevo = tfEmail.getText();
+
+            if (validarNombre(nombreNuevo)) {
+                if (emailNuevo.matches("^[\\w.-]+@[a-zA-Z\\d.-]+\\.[a-zA-Z]{2,}$")) {
+                    Peregrino peregrino = obtenerPeregrino();
+                    peregrino.setNombre(nombreNuevo);
+                    peregrino.setEmail(emailNuevo);
+                    pes.actualizar(peregrino);
+
+                    tfNombre.setText(nombreNuevo);
+                    tfEmail.setText(emailNuevo);
+
+                    tfNombre.setEditable(false);
+                    tfEmail.setEditable(false);
+
+                    Alert confirmacion = new Alert(Alert.AlertType.INFORMATION);
+                    confirmacion.setTitle("Operación exitosa");
+                    confirmacion.setHeaderText("Se han actualizado los datos del peregrino exitosamente");
+                    confirmacion.showAndWait();
+
+                    btnEditar.setVisible(true);
+                    btnGuardar.setVisible(false);
+                } else {
+                    Alert error = new Alert(Alert.AlertType.ERROR);
+                    error.setTitle("Error");
+                    error.setHeaderText("Email inválido");
+                    error.setContentText("El email no tiene un formato válido");
+                    error.showAndWait();
+                }
+
+            } else {
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Error");
+                error.setHeaderText("Nombre inválido");
+                error.setContentText("El nombre no puede estar vacio y debe contener solo letras");
+                error.showAndWait();
+            }
+
+        } catch (Exception e) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Fatal Error");
+            error.setHeaderText("Ocurrió una excepción desconocida");
+            error.setContentText(e.getMessage());
+            error.showAndWait();
+        }
     }
 
     /***
@@ -310,7 +368,7 @@ public class PeregrinoControlador implements Initializable {
         Peregrino peregrino = obtenerPeregrino();
 
         tfNombre.setText(peregrino.getNombre());
-        tfNacionalidad.setText(peregrino.getNacionalidad());
+        tfEmail.setText(peregrino.getEmail());
     }
 
     /***
@@ -367,5 +425,18 @@ public class PeregrinoControlador implements Initializable {
     private List<Estancia> obtenerEstancias(Long idPeregrino) {
         List<Estancia> estanciasActuales = ess.encontrarPorIdPeregrino(idPeregrino);
         return estanciasActuales;
+    }
+
+    private boolean validarNombre(String nombre) {
+        if(nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+")) {
+            String nombreSinEspacios = nombre.trim();
+            if(!nombreSinEspacios.isEmpty()) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 }

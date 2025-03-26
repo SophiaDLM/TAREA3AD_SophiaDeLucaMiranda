@@ -10,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.web.WebView;
 import javafx.stage.Modality;
@@ -36,9 +35,8 @@ import java.util.ResourceBundle;
 /***
  * Clase IniciarSesionControlador que se encarga de manejar las acciones
  * disponibles tanto de un usuario invitado como de un usuario existente en la base de datos.
- * Estás acciones son acceder a la ayuda de usuario (no implementada aún), iniciar sesión con sus credenciales,
+ * Estas acciones son acceder a la ayuda de usuario (no implementada aún), iniciar sesión con sus credenciales,
  * registrarse como peregrino y cerrar sesión si así lo desea.
- *
  * Esta clase implementa Initializable para el uso de JavaFX.
  */
 @Controller
@@ -70,6 +68,21 @@ public class IniciarSesionControlador implements Initializable {
 
     @FXML
     private ChoiceBox<String> cbParadaInicial;
+
+    @FXML
+    private Button btnVerContra;
+
+    @FXML
+    private Button btnOcultarContra;
+
+    @FXML
+    private TextField tfMostrarContra;
+
+    @FXML
+    private PasswordField pfConfirmarContra;
+
+    @FXML
+    private TextField tfEmail;
 
     //Elementos relacionados con el manejo de las escenas:
     @Lazy
@@ -104,7 +117,7 @@ public class IniciarSesionControlador implements Initializable {
         try{
             WebView webview = new WebView();
 
-            URL archivoAyuda = getClass().getClassLoader().getResource("ayuda/help.html");
+            URL archivoAyuda = getClass().getClassLoader().getResource("Tarea3ADSophiaDeLucaMiranda/src/main/resources/ayuda/help.html");
             webview.getEngine().load(archivoAyuda.toExternalForm());
 
             Stage escenarioAyuda = new Stage();
@@ -154,6 +167,32 @@ public class IniciarSesionControlador implements Initializable {
         }
     }
 
+    @FXML
+    public void verContraseña() {
+        String contraseña = pfContraseña.getText();
+
+        pfContraseña.setVisible(false);
+        btnVerContra.setVisible(false);
+
+        tfMostrarContra.setText(contraseña);
+
+        tfMostrarContra.setVisible(true);
+        btnOcultarContra.setVisible(true);
+    }
+
+    @FXML
+    public void ocultarContraseña() {
+        String contraseña = tfMostrarContra.getText();
+
+        tfMostrarContra.setVisible(false);
+        btnOcultarContra.setVisible(false);
+
+        pfContraseña.setText(contraseña);
+
+        pfContraseña.setVisible(true);
+        btnVerContra.setVisible(true);
+    }
+
     /***
      * Método cambiarPanelIniciarSesion que cambia la visibilidad de los paneles.
      */
@@ -184,11 +223,11 @@ public class IniciarSesionControlador implements Initializable {
         Credenciales credenciales = cs.encontrarPorNombreUsuario(tfUsuario.getText());
         su.setCredenciales(credenciales);
 
-        if(cs.autenticar(tfUsuario.getText(), pfContraseña.getText()).equals(TipoUsuario.ADMINISTRADOR)) {
+        if(cs.autenticar(tfUsuario.getText(), pfContraseña.getText()).equals(TipoUsuario.ADMINISTRADOR) || cs.autenticar(tfUsuario.getText(), tfMostrarContra.getText()).equals(TipoUsuario.ADMINISTRADOR)) {
             me.cambiarEscena(VistaFxml.ADMINISTRADOR);
-        } else if(cs.autenticar(tfUsuario.getText(), pfContraseña.getText()).equals(TipoUsuario.PARADA)) {
+        } else if(cs.autenticar(tfUsuario.getText(), pfContraseña.getText()).equals(TipoUsuario.PARADA) || cs.autenticar(tfUsuario.getText(), tfMostrarContra.getText()).equals(TipoUsuario.PARADA)) {
             me.cambiarEscena(VistaFxml.PARADA);
-        } else if(cs.autenticar(tfUsuario.getText(), pfContraseña.getText()).equals(TipoUsuario.PEREGRINO)) {
+        } else if(cs.autenticar(tfUsuario.getText(), pfContraseña.getText()).equals(TipoUsuario.PEREGRINO) || cs.autenticar(tfUsuario.getText(), tfMostrarContra.getText()).equals(TipoUsuario.PEREGRINO)) {
             me.cambiarEscena(VistaFxml.PEREGRINO);
         } else {
             Alert error = new Alert(Alert.AlertType.ERROR);
@@ -216,50 +255,61 @@ public class IniciarSesionControlador implements Initializable {
         try {
             String usuario = tfUsuarioP.getText();
             String contraseña = pfContraseñaP.getText();
+            String confirmacionContraseña = pfConfirmarContra.getText();
             String nombre = tfNombre.getText();
             String nacionalidad = cbNacionalidad.getSelectionModel().getSelectedItem();
+            String email = tfEmail.getText();
             String paradaSeleccionada = cbParadaInicial.getSelectionModel().getSelectedItem();
 
             if (usuario.matches("[a-zA-Z0-9_]+")) {
-                if (contraseña.matches("[a-zA-Z0-9_]{8}")) {
+                if (contraseña.matches("[a-zA-Z0-9_]{8}") && contraseña.equals(confirmacionContraseña)) {
                     if (validarNombre(nombre)) {
                         if (nacionalidad != null) {
-                            if (paradaSeleccionada != null) {
-                                String[] campos = paradaSeleccionada.split(" - ");
-                                Long idParada = Long.parseLong(campos[0]);
+                            if(email.matches("^[\\w.-]+@[a-zA-Z\\d.-]+\\.[a-zA-Z]{2,}$")) {
+                                if (paradaSeleccionada != null) {
+                                    String[] campos = paradaSeleccionada.split(" - ");
+                                    Long idParada = Long.parseLong(campos[0]);
 
-                                Parada paradaInicial = pas.encontrarPorId(idParada);
-                                if (paradaInicial != null) {
-                                    Credenciales nuevasCredenciales = new Credenciales(usuario, contraseña, TipoUsuario.PEREGRINO);
-                                    nuevasCredenciales = cs.guardar(nuevasCredenciales);
+                                    Parada paradaInicial = pas.encontrarPorId(idParada);
+                                    if (paradaInicial != null) {
+                                        Credenciales nuevasCredenciales = new Credenciales(usuario, contraseña, TipoUsuario.PEREGRINO);
+                                        nuevasCredenciales = cs.guardar(nuevasCredenciales);
 
-                                    Peregrino nuevoPeregrino = new Peregrino(nuevasCredenciales.getId(), nombre, nacionalidad);
-                                    nuevoPeregrino = pes.guardar(nuevoPeregrino);
+                                        Peregrino nuevoPeregrino = new Peregrino(nuevasCredenciales.getId(), nombre, nacionalidad, email);
+                                        nuevoPeregrino = pes.guardar(nuevoPeregrino);
 
-                                    Carnet nuevoCarnet = new Carnet(nuevoPeregrino.getId()); //NOOO TOCAR POR NADA DEL MUNDO
-                                    nuevoCarnet.setParadaInicial(paradaInicial);
-                                    nuevoCarnet = cas.guardar(nuevoCarnet);
+                                        Carnet nuevoCarnet = new Carnet(nuevoPeregrino.getId()); //NOOO TOCAR POR NADA DEL MUNDO
+                                        nuevoCarnet.setParadaInicial(paradaInicial);
+                                        nuevoCarnet = cas.guardar(nuevoCarnet);
 
-                                    pps.guardarPeregrinoParada(nuevoPeregrino.getId(), nuevoCarnet.getParadaInicial().getId());
+                                        pps.guardarPeregrinoParada(nuevoPeregrino.getId(), nuevoCarnet.getParadaInicial().getId());
 
-                                    Alert confirmacion = new Alert(Alert.AlertType.INFORMATION);
-                                    confirmacion.setTitle("Operación exitosa");
-                                    confirmacion.setHeaderText("Se ha registrado el usuario y la parada exitosamente");
-                                    confirmacion.showAndWait();
+                                        Alert confirmacion = new Alert(Alert.AlertType.INFORMATION);
+                                        confirmacion.setTitle("Operación exitosa");
+                                        confirmacion.setHeaderText("Se ha registrado el usuario y la parada exitosamente");
+                                        confirmacion.showAndWait();
+
+                                    } else {
+                                        Alert error = new Alert(Alert.AlertType.ERROR);
+                                        error.setTitle("Error");
+                                        error.setHeaderText("Parada inicial inválida");
+                                        error.setContentText("La parada inicial no ha sido encontrada en la base de datos");
+                                        error.showAndWait();
+                                    }
 
                                 } else {
                                     Alert error = new Alert(Alert.AlertType.ERROR);
                                     error.setTitle("Error");
                                     error.setHeaderText("Parada inicial inválida");
-                                    error.setContentText("La parada inicial no ha sido encontrada en la base de datos");
+                                    error.setContentText("La parada inicial no puede estar vacia");
                                     error.showAndWait();
                                 }
 
                             } else {
                                 Alert error = new Alert(Alert.AlertType.ERROR);
                                 error.setTitle("Error");
-                                error.setHeaderText("Parada inicial inválida");
-                                error.setContentText("La parada inicial no puede estar vacia");
+                                error.setHeaderText("Email inválido");
+                                error.setContentText("El email no tiene un formato válido");
                                 error.showAndWait();
                             }
 
@@ -275,7 +325,7 @@ public class IniciarSesionControlador implements Initializable {
                         Alert error = new Alert(Alert.AlertType.ERROR);
                         error.setTitle("Error");
                         error.setHeaderText("Nombre inválido");
-                        error.setContentText("El nombre no puede estar vacio");
+                        error.setContentText("El nombre no puede estar vacío y solo puede tener letras");
                         error.showAndWait();
                     }
 

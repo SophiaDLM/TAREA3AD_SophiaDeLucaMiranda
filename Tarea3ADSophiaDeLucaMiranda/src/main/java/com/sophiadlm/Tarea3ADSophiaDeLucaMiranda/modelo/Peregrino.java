@@ -22,6 +22,8 @@ public class Peregrino {
 	
 	private String nacionalidad;
 
+	private String email;
+
 	//Representa la relación OneToOne con la tabla credenciales:
 	@OneToOne
 	@PrimaryKeyJoinColumn
@@ -45,10 +47,11 @@ public class Peregrino {
 		
 	}
 	
-	public Peregrino(Long id, String nombre, String nacionalidad) {
+	public Peregrino(Long id, String nombre, String nacionalidad, String email) {
 		this.id = id;
 		this.nombre = nombre;
 		this.nacionalidad = nacionalidad;
+		this.email = email;
 	}
 	
 	//Getters y Setters de la clase:
@@ -108,21 +111,29 @@ public class Peregrino {
 		this.listaParadas = listaParadas;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	//Métodos básicos:
 	@Override
 	public String toString() {
-		return "Peregrino [id=" + id + ", nombre=" + nombre + ", nacionalidad=" + nacionalidad + "]";
+		return "Peregrino [id=" + id + ", nombre=" + nombre + ", nacionalidad=" + nacionalidad + ", email=" + email +"]";
 	}
 
 	@Override
 	public boolean equals(Object o) {
 		if (o == null || getClass() != o.getClass()) return false;
 		Peregrino peregrino = (Peregrino) o;
-		return Objects.equals(id, peregrino.id) && Objects.equals(nombre, peregrino.nombre) && Objects.equals(nacionalidad, peregrino.nacionalidad) && Objects.equals(credenciales, peregrino.credenciales) && Objects.equals(carnet, peregrino.carnet) && Objects.equals(listaEstancias, peregrino.listaEstancias) && Objects.equals(listaParadas, peregrino.listaParadas);
+		return Objects.equals(id, peregrino.id) && Objects.equals(nombre, peregrino.nombre) && Objects.equals(nacionalidad, peregrino.nacionalidad) && Objects.equals(email, peregrino.email) && Objects.equals(credenciales, peregrino.credenciales) && Objects.equals(carnet, peregrino.carnet) && Objects.equals(listaEstancias, peregrino.listaEstancias) && Objects.equals(listaParadas, peregrino.listaParadas);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, nombre, nacionalidad, credenciales, carnet, listaEstancias, listaParadas);
+		return Objects.hash(id, nombre, nacionalidad, email, credenciales, carnet, listaEstancias, listaParadas);
 	}
 }
